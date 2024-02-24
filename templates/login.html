@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Interview Insights</title>
+            <style>
+                body {
+                    background: #f2f2f2; /* Light gray background */
+                    overflow: hidden;
+                    font-family: Arial, sans-serif; /* Use a simple font */
+                }
+                .heading {
+                    height: 100px;
+                    width: 100%;
+                    background: #007bff; /* Blue header */
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #ffffff;
+                    font-size: 24px; /* Adjust font size */
+                }
+                .loginform {
+                    position: relative;
+                    margin: 6% auto;
+                    height: 300px;
+                    width: 400px;
+                    background: #ffffff; /* White background */
+                    border-radius: 20px;
+                    padding: 20px; /* Add some padding for better spacing */
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+                }
+                .ltb {
+                    margin-top: 0; /* Remove top margin */
+                    padding-bottom: 20px; /* Add bottom padding for spacing */
+                    font-size: 20px; /* Adjust font size */
+                    text-align: center;
+                }
+                table {
+                    border-spacing: 10px;
+                    margin-top: 20px; /* Add top margin for spacing */
+                    width: 100%; /* Make table width 100% */
+                    text-align: center; /* Center-align text within table */
+                }
+                .input {
+                    border-radius: 8px;
+                    height: 30px;
+                    width: 350px; /* Increase input width for better usability */
+                    padding: 5px; /* Add padding for better appearance */
+                }
+                .lab {
+                    font-size: 16px; /* Adjust font size */
+                }
+                .btn {
+                    border-radius: 8px;
+                    height: 40px;
+                    width: 360px; /* Increase button width for better usability */
+                    background: #007bff; /* Blue button */
+                    color: white;
+                    cursor: pointer;
+                    border: none; /* Remove border */
+                }
+                a {
+                    text-decoration: none;
+                    color: #007bff; /* Blue link */
+                }
+            </style>
+        </head>
+        <body> 
+                <div class="heading">
+                    <h2>Interview Insights</h2>
+                </div>
+                <div class="loginform">
+                    <form name="lform" method="post" action = "{% url 'verify_email' %}">
+                        {% csrf_token %}
+                        <table>
+                            <h3 class="ltb">Verify your University's E-Mail ID ending with @anurag.edu.in</h3>
+                            <tr>
+                                <td style="text-align: left;"><label for="custid" class="lab">E-MAIL ID</label></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;"><input type="text" class="input" id="emailid" name="emailid"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;"><button type="submit" class="btn" name="action" value="get_otp">Get OTP</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                    {% if invalid_email %}
+                        <!-- Display error message for invalid email -->
+                        <h4 style='text-align:center;'>Invalid email! try using a valid email.</h4>
+                    {% endif %}
+                    {% if otp_expired %}
+                        <h4 style="text-align:center">OTP Expired, Request again</h4>
+                    {% endif %}
+                    
+                </div>
+        </body>
+        
+</html>

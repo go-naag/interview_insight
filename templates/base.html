@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Interview Insights</title>
+        <style>
+            body {
+                background: linear-gradient(to right, #E6E6FA, #FFDAB9);
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            .contents {
+                background-color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 10%;
+            }
+            .title {
+                font-family: Arial, sans-serif;
+                color: #021FA2;
+                font-size: 32px;
+                margin: 0;
+                padding: 0;
+            }
+            .caption {
+                font-family: Arial, sans-serif;
+                color: #021FA2;
+                font-size: 15px;
+                margin: 0;
+                padding: 0;
+            }
+            .nav-links {
+                display: flex;
+                align-items: center;
+                margin-right:12%;
+            }
+            .nav-links a {
+                margin-left: 35px;
+                color: #021FA2;
+                text-decoration: none;
+                font-family: Tahoma;
+                font-size: 22px;
+                transition: color 0.1s;
+            }
+            .nav-links a.h:hover {
+                color: orange;
+            }
+            .box-link {
+                background-color: #FFD700; /* Yellow background color */
+                padding: 10px; /* Padding around the link */
+                border-radius: 5px; /* Rounded corners */
+            }
+
+            /* Media Query for smaller screens */
+            @media screen and (max-width: 768px) {
+                .nav-links {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-top: 10px;
+                }
+                .nav-links a {
+                    margin: 5px 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class='contents'>
+            <div>
+                <h1 class="title">Interview Insights</h1>
+                <p class="caption">Real insights, shared experiences</p>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="h">Home</a>
+                <a href="#" class="h">Placement</a>
+                <a href="#" class="h">Stats</a>
+                <a href="#" class="h">About</a>
+                <a href="{% url 'form' %}" class="box-link">Share Your Experience</a>
+                <a href="{% url 'logout' %}" class="box-link">Logout</a>
+            </div>
+        </header>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

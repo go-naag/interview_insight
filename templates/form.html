@@ -1,0 +1,115 @@
+{% include 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share your experience - Interview Insights</title>
+    <style>
+        /* Styles specific to the form */
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 2% auto; /* Center the form */
+        }
+        
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: calc(100% - 12px);
+            padding: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease, padding 0.3s ease;
+            display: block; /* Make the submit button a block-level element */
+            margin: 20px auto 0; /* Center the submit button and add space between the last label and the submit button */
+        }
+    
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); /* Increase size on hover */
+            padding: 16px 28px; /* Increase padding on hover */
+        }
+    </style>
+</head>
+<body>
+    
+    <form action="#" method="post">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="lp">Linkedin Profile URL:</label>
+        <input type="text" id="lp" name="lp">
+    
+        <label for="branch">Branch: (eg: DS)</label>
+        <input type="text" id="branch" name="branch" required>
+    
+        <label for="rollno">Roll No:</label>
+        <input type="text" id="rollno" name="rollno" required>
+    
+        <label for="year_of_passout">Year of Passout: (eg:2024)</label>
+        <input type="text" id="year_of_passout" name="year_of_passout" required>
+
+        <label for="cname">Company Name:</label>
+        <input type="text" id="cname" name="cname" required>
+    
+        <label for="year_of_interview">Year of Interview: (eg:2024)</label>
+        <input type="text" id="year_of_interview" name="year_of_interview" required>
+    
+        <label for="role">Role: (eg: SDE, GET)</label>
+        <input type="text" id="role" name="role" required>
+        
+        <label for="Brief">Brief description of role (Optional):</label>
+        <textarea rows="3" cols="50" id="brief" name="brief"> </textarea>
+        
+        <label for="selection">Selection Procedure (Mention the rounds for eg: Round 1- Online Test, Round 2- Technical interview, Round 3- HR):</label>
+        <textarea rows="3" cols="50" id="selection" name="selection" required> </textarea>
+        
+        <label for="online">Description of Online Test (Hard, Easy or Medium) (Describe the topics covered)  (If not applicable mention NA)</label>
+        <textarea rows="3" cols="50" id="online" name="online" required> </textarea>
+        
+        <label for="tr">Description of Technical/ Non- Technical Interview (What are the questions asked, Level of Interview) (If not applicable mention NA)</label>
+        <textarea rows="3" cols="50" id="tr" name="tr" required> </textarea>
+        
+        
+        <label for="hr">Description of HR round (If not applicable mention NA)</label>
+        <textarea rows="3" cols="50" id="hr" name="hr"> </textarea>
+        
+        <label for="resources">Resources for Preparation (You can provide names or links to useful websites) (Optional) </label>
+        <textarea rows="3" cols="50" id="resources" name="resources"> </textarea>
+        
+        <label for="contact">Contact no. (Optional) (Need for communication with admin team and not for public access )</label>
+        <input type="text" id="contact" name="contact">
+        
+        
+    
+        <input type="submit" value="Submit">
+    </form>
+    
+</body>
+</html>
+{% endblock %}
