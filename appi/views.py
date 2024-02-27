@@ -10,6 +10,7 @@ import smtplib
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 
+
 def login(request):
     return render(request, 'login.html')
 
@@ -68,7 +69,6 @@ def verify_otp(request):
     else:
         return HttpResponse('Method Not Allowed')
 
-
 def logout_view(request):
     logout(request)
     # Redirect to a specific page after logout
@@ -77,6 +77,7 @@ def logout_view(request):
 
 def form_html(request):
     return render(request, 'form.html')
+
 def home_html(request):
     return render(request, 'home.html')
 
