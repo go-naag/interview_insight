@@ -81,6 +81,22 @@ def form_html(request):
 
 def home_html(request):
     return render(request, 'home.html')
+
+from .models import Company
+
+def companies(request):
+    comp = Company.objects.all()
+    return render(request, 'companies.html', {'comp':comp})
+
+def company_detail(request, company_name):
+    # Perform the query
+    stusers = Userdetails.objects.filter(interview__company__cname__iexact=company_name).values('name', 'rollno','branch')
+
+    # Pass the data to the template or process it further
+    #context = {'users_under_company': users_under_company}
+    return render(request, 'students.html', {'stusers':stusers})
+
+
 from django.shortcuts import render, redirect
 from .models import Userdetails, Interview, Company
 
@@ -109,14 +125,13 @@ def add_interview(request):
         # Create or get Interviewee object
         userdetails, created = Userdetails.objects.get_or_create(
             email=email,
-            defaults={
-                'name': name,
-                'linkedin_url': linkedin_url,
-                'branch': branch,
-                'rollno': rollno,
-                'year_of_passout': year_of_passout,
-                'contact_no': contact_no
-            }
+            name = name,
+            linkedin_url = linkedin_url,
+            branch = branch,
+            rollno = rollno,
+            year_of_passout = year_of_passout,
+            contact_no = contact_no
+            
         )
 
         # Get or create Company object
