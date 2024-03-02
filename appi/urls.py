@@ -9,5 +9,5 @@ urlpatterns = [
     path('verify-email/', views.verify_email, name='verify_email'),
     path('verify-otp/', views.verify_otp, name='verify_otp'),
     path('',views.login,name='login'),
-    
+    path('add_interview/', views.add_interview, name='add_interview'),
 ]

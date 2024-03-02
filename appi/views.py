@@ -43,6 +43,7 @@ def verify_email(request):
         #email = request.POST.get('emailid', '')
         otp = send_otp(email)
         request.session['otp'] = otp
+        request.session['email']=email
         return render(request, 'verifylogin.html', {'otp_sent': True})
     else:
         messages.error(request, 'Please enter a valid email ending with @anurag.edu.in')
@@ -80,5 +81,66 @@ def form_html(request):
 
 def home_html(request):
     return render(request, 'home.html')
+from django.shortcuts import render, redirect
+from .models import Userdetails, Interview, Company
 
+def add_interview(request):
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        linkedin_url = request.POST.get('lp')
+        branch = request.POST.get('branch')
+        rollno = request.POST.get('rollno')
+        year_of_passout = request.POST.get('year_of_passout')
+        company_name = request.POST.get('cname')
+        year_of_interview = request.POST.get('year_of_interview')
+        role = request.POST.get('role')
+        brief_description = request.POST.get('brief')
+        selection_procedure = request.POST.get('selection')
+        online_test_desc = request.POST.get('online')
+        tech_interview_desc = request.POST.get('tr')
+        hr_interview_desc = request.POST.get('hr')
+        prep_resources = request.POST.get('resources')
+        contact_no = request.POST.get('contact')
+        
+        # Get email from session
+        email = request.session.get('email')
+
+        # Create or get Interviewee object
+        userdetails, created = Userdetails.objects.get_or_create(
+            email=email,
+            defaults={
+                'name': name,
+                'linkedin_url': linkedin_url,
+                'branch': branch,
+                'rollno': rollno,
+                'year_of_passout': year_of_passout,
+                'contact_no': contact_no
+            }
+        )
+
+        # Get or create Company object
+        company, created = Company.objects.get_or_create(
+            cname__iexact=company_name,
+            defaults={'cname': company_name}
+        )
+
+        # Create Interview object
+        interview = Interview.objects.create(
+            user=userdetails,
+            company=company,
+            year_of_interview=year_of_interview,
+            role=role,
+            brief_description=brief_description,
+            selection_procedure=selection_procedure,
+            online_test_desc=online_test_desc,
+            tech_interview_desc=tech_interview_desc,
+            hr_interview_desc=hr_interview_desc,
+            prep_resources=prep_resources
+        )
+
+        # Redirect to a success page or any other page
+        return HttpResponse('success_page')  # Change 'success_page' to your actual success page URL or name
+    else:
+        return render(request, 'your_template_name.html')  # Change 'your_template_name.html' to your actual template name
 
