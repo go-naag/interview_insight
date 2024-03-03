@@ -8,8 +8,8 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 from django.contrib.auth import logout
-from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 def login(request):
     return render(request, 'login.html')
@@ -20,8 +20,8 @@ def send_otp(email):
     body = f'Your OTP is: {otp}'
     subject = 'Your OTP for Interview Insights'
     try:
-        email_sender = 'gopunagender3@gmail.com'
-        email_password = 'qlbc uxsb nbya oidy'
+        email_sender = 'interviewinsights37@gmail.com'
+        email_password = 'ctxz seub ascd tcje'
         email_receiver = email
         em = EmailMessage()
         em['From'] = email_sender
@@ -43,7 +43,7 @@ def verify_email(request):
         #email = request.POST.get('emailid', '')
         otp = send_otp(email)
         request.session['otp'] = otp
-        request.session['email']=email
+        request.session['email'] = email
         return render(request, 'verifylogin.html', {'otp_sent': True})
     else:
         messages.error(request, 'Please enter a valid email ending with @anurag.edu.in')
@@ -70,32 +70,25 @@ def verify_otp(request):
     else:
         return HttpResponse('Method Not Allowed')
 
+
 def logout_view(request):
     logout(request)
     # Redirect to a specific page after logout
-    return redirect('login')
+    return redirect(reverse('login'))
 
 
 def form_html(request):
     return render(request, 'form.html')
 
+
 def home_html(request):
-    return render(request, 'home.html')
+    companies = Company.objects.all()
+    return render(request, 'home.html', {'companies': companies})
 
-from .models import Company
 
-def companies(request):
-    comp = Company.objects.all()
-    return render(request, 'companies.html', {'comp':comp})
+# views.py
 
-def company_detail(request, company_name):
-    # Perform the query
-    stusers = Userdetails.objects.filter(interview__company__cname__iexact=company_name).values('name', 'rollno','branch')
-
-    # Pass the data to the template or process it further
-    #context = {'users_under_company': users_under_company}
-    return render(request, 'students.html', {'stusers':stusers})
-
+# views.py
 
 from django.shortcuts import render, redirect
 from .models import Userdetails, Interview, Company
@@ -155,7 +148,48 @@ def add_interview(request):
         )
 
         # Redirect to a success page or any other page
-        return HttpResponse('success_page')  # Change 'success_page' to your actual success page URL or name
+        return render(request,'form.html',{'submit':True})  # Change 'success_page' to your actual success page URL or name
     else:
         return render(request, 'your_template_name.html')  # Change 'your_template_name.html' to your actual template name
 
+
+
+
+
+def companies(request):
+    comp = Company.objects.all()
+    return render(request, 'companies.html', {'comp':comp})
+
+
+
+def company_detail(request, company_name):
+    # Perform the query
+    stusers = Userdetails.objects.filter(interview__company__cname__iexact=company_name).values('name', 'rollno', 'branch','id')
+
+    # Pass the data to the template or process it further
+    #context = {'users_under_company': users_under_company}
+    return render(request, 'students.html', {'stusers':stusers})
+
+
+
+from django.shortcuts import get_object_or_404
+
+
+def user_detail(request, user_id):
+    # Fetch the user details from the database
+    user = get_object_or_404(Userdetails, pk=user_id)
+
+    # Pass the user object to the template
+    return render(request, 'user_details.html', {'user': user})
+def search_companies(request):
+    if 'company' in request.GET:
+        company_name = request.GET['company']
+        companies = Company.objects.filter(cname__istartswith=company_name)
+    else:
+        companies = Company.objects.all()
+    return render(request, 'home.html', {'companies': companies})
+
+def search_company_students_home(request):
+    if 'company' in request.GET:
+        company_name = request.GET['company']
+        return company_detail(request, company_name)

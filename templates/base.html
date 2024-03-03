@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Interview Insights</title>
+        <link rel="icon" href="favicon.ico" src= type="image/x-icon">
         <style>
             body {
                 background: linear-gradient(to right, #E6E6FA, #FFDAB9);
@@ -76,7 +78,6 @@
             <div class="nav-links">
                 <a href="{% url 'home' %}" class="h">Home</a>
                 <a href="{% url 'companies' %}" class="h">Placement</a>
-                <a href="#" class="h">Stats</a>
                 <a href="#" class="h">About</a>
                 <a href="{% url 'form' %}" class="box-link">Share Your Experience</a>
                 <a href="{% url 'logout' %}" class="box-link">Logout</a>

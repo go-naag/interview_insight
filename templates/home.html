@@ -1,16 +1,86 @@
+{% load static %}
+{% include 'base.html' %}
+
+    {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Interview Insights</title>
+    <style>
+        /* Center the search bar */
+        body {
+            
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            justify-content: center;
+            margin:4% auto;
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+           
+            padding: 20px;
+            
+        }
+
+        
+
+        input[type="text"] {
+            width: 500px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 150px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        img {
+            display: block;
+            margin: 0 auto; /* Center the image horizontally */
+            max-width: 50%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    {% include 'base.html' %}
-
-    {% block content %}
-        <!-- Your home page content goes here -->
-        
-    {% endblock %}
+    
+        <form action="{% url 'search_company_students_home' %}" method="GET">
+            <input type="text" name="company" placeholder="Search for companies..." list="company_list">
+            <datalist id="company_list">
+                {% for company in companies %}
+                    <option value="{{ company.cname }}">
+                {% endfor %}
+            </datalist>
+            <button type="submit">Search</button>
+        </form>
+        <img src="{% static 'image.jpg' %}" alt="Your Image">
 </body>
 </html>
+{% endblock %}

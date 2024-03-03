@@ -1,0 +1,163 @@
+{% include 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Details</title>
+
+<style>
+    body {
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif; /* Adding a font for better readability */
+    }
+
+    .details-container {
+        
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        margin: 2% auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px; /* Increase gap between box and details container */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left; /* Aligning table content to the left */
+        display:flex;
+        flex-direction: column;
+        
+        
+    }
+
+    table td {
+        padding: 12px 6px; /* Adding padding to table cells */
+    }
+
+    .details-container p {
+        margin-bottom: 6px; /* Decreasing space after every detail */
+    }
+
+    .details-container .label {
+        font-weight: bold; /* Making labels bold */
+        font-size: 18px; /* Increasing font size of attributes */
+    }
+
+    .details-container .bold-attribute {
+        font-weight: bold; /* Making attributes bold */
+    }
+
+    .user-details-box {
+        background: linear-gradient(to right, #34495e, #2c3e50);
+        padding: 20px;
+        border-radius: 20px;
+        border: 6px solid transparent;
+        width: 60%;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: 2% auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        margin-bottom: 20px; /* Increase gap between box and details container */
+    }
+
+    .user-details-box p {
+        margin-bottom: 10px;
+    }
+
+    .company-name {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+    .user-name {
+        text-transform: capitalize;
+        font-size: 25px;
+        margin-top: 10px;
+        font-weight: bold;
+        color: white;
+    }
+
+</style>
+</head>
+<body>
+    <!-- User Details Box -->
+    <div class="user-details-box">
+        {% if user.interview_set.all %}
+            {% with interview=user.interview_set.first %}
+                <p class="company-name">{{ interview.company.cname }}</p>
+                <p class="user-name">{{ user.name }}</p>
+            {% endwith %}
+        {% endif %}
+    </div>
+
+    <!-- Details Container -->
+    <div class="details-container">
+        <table>
+            <tr>
+                <td class="label"><span class="bold-attribute">Branch:</span></td> <td>{{ user.branch }}</td>
+            </tr>
+            <tr>
+                <td class="label"><span class="bold-attribute">Roll Number:</span></td> <td>{{ user.rollno }}</td>
+            </tr>
+            <tr>
+                <td class="label"><span class="bold-attribute">Year of Passout:</span></td> <td>{{ user.year_of_passout }}</td>
+            </tr>
+            <tr>
+                <td class="label"><span class="bold-attribute">Email:</span></td> <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td class="label"><span class="bold-attribute">LinkedIn URL:</span></td> <td>{{ user.linkedin_url }}</td>
+            </tr>
+            <!-- <tr>
+                <td class="label"><span class="bold-attribute">Contact Number:</span></td> <td>{{ user.contact_no }}</td>
+            </tr> -->
+            {% if user.interview_set.all %}
+                {% with interview=user.interview_set.first %}
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Year of Interview:</span></td> <td>{{ interview.year_of_interview }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Role:</span></td> <td>{{ interview.role }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Brief Description:</span></td> <td>{{ interview.brief_description }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Selection Procedure:</span></td> <td>{{ interview.selection_procedure }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Online Test Description:</span></td> <td>{{ interview.online_test_desc }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Tech Interview Description:</span></td> <td>{{ interview.tech_interview_desc }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">HR Interview Description:</span></td> <td>{{ interview.hr_interview_desc }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span class="bold-attribute">Preparation Resources:</span></td> <td>{{ interview.prep_resources }}</td>
+                    </tr>
+                {% endwith %}
+            {% endif %}
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}

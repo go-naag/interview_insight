@@ -53,6 +53,11 @@
             transform: scale(1.05); /* Increase size on hover */
             padding: 16px 28px; /* Increase padding on hover */
         }
+        p{
+            text-align: center;
+            font-weight: bold;
+            color: purple;
+        }
     </style>
 </head>
 <body>
@@ -108,6 +113,9 @@
         
     
         <input type="submit" value="Submit">
+        {% if submit %}
+        <p><u>Thanks for submitting</u></p>
+        {% endif %}
     </form>
     
 </body>
