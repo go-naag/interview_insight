@@ -80,7 +80,6 @@ def logout_view(request):
 def form_html(request):
     return render(request, 'form.html')
 
-
 def home_html(request):
     companies = Company.objects.all()
     return render(request, 'home.html', {'companies': companies})
@@ -193,3 +192,46 @@ def search_company_students_home(request):
     if 'company' in request.GET:
         company_name = request.GET['company']
         return company_detail(request, company_name)
+from .models import * 
+from .forms import * 
+
+def community(request):
+    forums=forum.objects.all()
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+ 
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request,'community.html',context)
+ 
+from django.shortcuts import render, redirect
+from .models import Userdetails, Interview, Company, forum
+from .forms import CreateInForum, CreateInDiscussion
+
+def addInForum(request):
+    form = CreateInForum()
+    if request.method == 'POST':
+        form = CreateInForum(request.POST)
+        if form.is_valid():
+            # Create an instance of the forum object but exclude email field
+            forum_instance = form.save(commit=False)
+            # Set the email field from session data
+            forum_instance.email = request.session.get('email')
+            forum_instance.save()
+            return redirect('community')
+    context = {'form': form}
+    return render(request, 'addInForum.html', context)
+
+ 
+def addInDiscussion(request):
+    form = CreateInDiscussion()
+    if request.method == 'POST':
+        form = CreateInDiscussion(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('community')
+    context ={'form':form}
+    return render(request,'addInDiscussion.html',context)

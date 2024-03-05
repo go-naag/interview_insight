@@ -1,5 +1,6 @@
 from django.urls import path,include
 from . import views
+from django.contrib import admin
 
 
 urlpatterns = [
@@ -15,4 +16,9 @@ urlpatterns = [
     path('user-detail/<int:user_id>/', views.user_detail, name='user_detail'),
     path('search/', views.search_companies, name='search_companies'),
     path('search_company_students_home/',views.search_company_students_home,name='search_company_students_home'),
+    path('community/',views.community,name='community'),
+    path('admin/', admin.site.urls),
+    path('community/',views.community,name='community'),
+    path('addInForum/',views.addInForum,name='addInForum'),
+    path('addInDiscussion/',views.addInDiscussion,name='addInDiscussion'),
 ]
