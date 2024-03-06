@@ -239,3 +239,5 @@ def addInDiscussion(request):
             return redirect('community')
     context ={'form':form}
     return render(request,'addInDiscussion.html',context)
+def archive(request):
+    return render(request,'archive.html')

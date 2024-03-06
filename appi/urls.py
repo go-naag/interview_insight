@@ -21,4 +21,5 @@ urlpatterns = [
     path('community/',views.community,name='community'),
     path('addInForum/',views.addInForum,name='addInForum'),
     path('addInDiscussion/',views.addInDiscussion,name='addInDiscussion'),
+    path('archive/',views.archive,name = 'archive')
 ]
