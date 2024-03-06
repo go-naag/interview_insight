@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Interview Insights</title>
-        
         <style>
             body {
                 background: linear-gradient(to right, #E6E6FA, #FFDAB9);
@@ -18,7 +16,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 10px 10%;
+                padding: 20px 10%;
             }
             .title {
                 font-family: Arial, sans-serif;
@@ -37,7 +35,7 @@
             .nav-links {
                 display: flex;
                 align-items: center;
-                margin-right:12%;
+                margin-right:1%;
             }
             .nav-links a {
                 margin-left: 35px;
@@ -50,7 +48,7 @@
             .nav-links a.h:hover {
                 color: orange;
             }
-            .box-link {
+            .nav-links .box-link {
                 background-color: #FFD700; /* Yellow background color */
                 padding: 10px; /* Padding around the link */
                 border-radius: 5px; /* Rounded corners */
@@ -78,10 +76,12 @@
             <div class="nav-links">
                 <a href="{% url 'home' %}" class="h">Home</a>
                 <a href="{% url 'companies' %}" class="h">Insights</a>
-                <a href="#" class="h">About</a>
                 <a href="{% url 'community' %}" class="h">Community</a>
+                <a href="#" class="h">Stats</a>
+                <a href="#" class="h">Archive</a>
                 <a href="{% url 'form' %}" class="box-link">Share Your Experience</a>
                 <a href="{% url 'logout' %}" class="box-link">Logout</a>
+                
             </div>
         </header>
         <div class="content">

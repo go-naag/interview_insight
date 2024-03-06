@@ -19,14 +19,15 @@
             margin: 2% auto; /* Center the form */
         }
         
-        label {
+        form label {
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
+            color: #021FA2; /* Preserve base.html style */
         }
         
-        input[type="text"],
-        textarea {
+        form input[type="text"],
+        form textarea {
             width: calc(100% - 12px);
             padding: 6px;
             margin-bottom: 10px;
@@ -35,7 +36,7 @@
             box-sizing: border-box;
         }
         
-        input[type="submit"] {
+        form input[type="submit"] {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -48,12 +49,12 @@
             margin: 20px auto 0; /* Center the submit button and add space between the last label and the submit button */
         }
     
-        input[type="submit"]:hover {
+        form input[type="submit"]:hover {
             background-color: #0056b3;
             transform: scale(1.05); /* Increase size on hover */
             padding: 16px 28px; /* Increase padding on hover */
         }
-        p{
+        form p{
             text-align: center;
             font-weight: bold;
             color: purple;
@@ -61,7 +62,7 @@
     </style>
 </head>
 <body>
-    
+    <div class="content">
     <form action="{% url 'add_interview' %}" method="post">
         {% csrf_token %}
         <label for="name">Name:</label>
@@ -117,7 +118,7 @@
         <p><u>Thanks for submitting</u></p>
         {% endif %}
     </form>
-    
+    </div>
 </body>
 </html>
 {% endblock %}

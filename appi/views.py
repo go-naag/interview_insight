@@ -231,7 +231,11 @@ def addInDiscussion(request):
     if request.method == 'POST':
         form = CreateInDiscussion(request.POST)
         if form.is_valid():
-            form.save()
+            discussion_instance = form.save(commit=False)
+            # Set the email field from session data
+            discussion_instance.email = request.session.get('email')
+            discussion_instance.save()
+            
             return redirect('community')
     context ={'form':form}
     return render(request,'addInDiscussion.html',context)

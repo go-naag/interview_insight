@@ -38,13 +38,14 @@ class forum(models.Model):
     link = models.CharField(max_length=100 ,null =True)
     date_created=models.DateTimeField(auto_now_add=True,null=True)
     
-    def _str_(self):
-        return str(self.topic)
+    def __str__(self):  # Use '__str__' instead of '_str_'
+        return self.topic  # Return the 'topic' field as the representation
  
 #child model
 class Discussion(models.Model):
     forum = models.ForeignKey(forum,blank=True,on_delete=models.CASCADE)
     discuss = models.CharField(max_length=1000)
+    email=models.CharField(max_length=200,null=True)
  
-    def _str_(self):
+    def __str__(self):
         return str(self.forum)

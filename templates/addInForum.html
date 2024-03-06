@@ -7,22 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        form{
-            border:4px solid black;
-            margin: 0 auto;
+        form {
+            border: 0px solid black;
+            margin: 45px auto;
             padding: 40px;
             width: fit-content;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffff;
+            border-radius: 8px;
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
-    
 </head>
 <body>
     <form action="{% url 'addInForum' %}" method="POST">
         {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" class="btn btn-success" value="submit">
-    </form> 
+        <div class="form-group">
+            <label for="id_name">Name:</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="id_topic">Topic:</label>
+            {{ form.topic }}
+        </div>
+        <div class="form-group">
+            <label for="id_description">Description:</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            <label for="id_link">Link:</label>
+            {{ form.link }}
+        </div>
+        <input type="submit" class="btn btn-success" value="Submit">
+    </form>
 </body>
 </html>
 

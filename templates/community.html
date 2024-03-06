@@ -16,10 +16,17 @@
         }
         .btn-success .button-text {
             display: none;
+            
         }
         
         .btn-success:hover .button-text {
             display: inline;
+            color:black;
+            
+        }
+        .btn-success:hover {
+            background-color: yellow;
+            border-color: white;
         }
     </style>
 </head>
@@ -40,12 +47,12 @@
             <div class="card-columns" style="padding: 10px; margin: 20px;"></div>
             
             
-            {%for forum in forums %}
+            {%for forum in forums reversed %}
             
                 <div class="card box container">
                     <br>
                     <h5 class="card-title">
-                        <a href='{{forum.link}}'><h3>{{forum.topic}}</h3></a> 
+                        <a href='{{forum.link}}'  target="_blank"><h3>{{forum.topic}}</h3></a> 
                         <div class="card-body container">
                                 <p>{{forum.description}}</p>
                             </h5>
