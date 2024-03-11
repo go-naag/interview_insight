@@ -1,0 +1,51 @@
+{% include 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .year-box{
+            height: 100px;
+            width: 300px;
+            display: inline-block;
+            border-radius: 9px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            margin-right: 20px;
+            
+            background: linear-gradient(to right, #11998E, #38EF7D);
+            
+            
+        }
+        h1{
+            text-align: center;
+        }
+        .total{
+            margin-left:20px;
+        }
+        @media (max-width: 768px) { /* Adjust the width as needed */
+            .year-box {
+              display: block;
+              margin-right: 0;
+              margin-bottom: 10px; /* Add space between rows */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="total">
+    
+        {% for passouts in distinct_passouts %}
+        <div class="year-box">
+            <h1><a href = "{% url 'company_detail' company_name=name  year=passouts.user__year_of_passout %}">{{passouts.user__year_of_passout}} Passouts</a> </h1>
+        </div>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
+{% endblock %}

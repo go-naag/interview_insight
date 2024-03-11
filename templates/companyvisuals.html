@@ -1,0 +1,54 @@
+{% include 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background-color: white;">
+    <h1>Interview Statistics in {{selected_year}} </h1>
+    <canvas id="interviewChart" width="300" height="100"></canvas>
+
+    <script>
+        const ctx = document.getElementById('interviewChart').getContext('2d');
+        const companies = [];
+        const counts = [];
+        {% for company_count in companies_count %}
+            companies.push("{{ company_count.company__cname }}");
+            counts.push({{ company_count.total }});
+        {% endfor %}
+
+        // Generate colors from bright to light based on counts
+        const colors = counts.map((count, index) => {
+            const alpha = 1 - (index / counts.length);
+            return `rgba(54, 162, 235, ${alpha})`;
+        });
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: companies,
+                datasets: [{
+                    label: 'Number of Students',
+                    data: counts,
+                    backgroundColor: colors,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

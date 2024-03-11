@@ -3,73 +3,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Small Box</title>
-<style>
-  .box {
-    width: 600px;
-    height: 150px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-    margin: 20px auto;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Center content vertically */
-    transition: transform 0.3s;
-  }
-  
-  .box:hover {
-    transform: scale(1.05);
-  }
-  
-  .box a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-  }
-
-  .view-link {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 30px; /* Adjusted height */
-    background-color: #f0f0f0; /* Initial background color */
-    border-top: 1px solid #ccc; /* Added border top */
-    text-align: center;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .view-link a {
-    color: blue; /* Initial color */
-    display: block;
-    height: 100%; /* Make anchor fill parent height */
-    line-height: 30px; /* Center anchor vertically */
-  }
-  
-  .view-link:hover a {
-    color: white; /* Hover color */
-  }
-  
-  .view-link:hover {
-    background-color: orange; /* Hover background color */
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies - Interview Insights</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .content {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .box {
+            width: 600px;
+            height: 150px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .box:hover {
+            transform: scale(1.05);
+        }
+        .box a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .view-link {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .view-link a {
+            color: blue;
+            display: block;
+            height: 100%;
+            line-height: 30px;
+        }
+        .view-link:hover a {
+            color: white;
+        }
+        .view-link:hover {
+            background-color: orange;
+        }
+    </style>
 </head>
 <body>
-    {% for com in comp %}
-    <div class="box">
-    <h1> {{com.cname}} </h1>
-    <div class="view-link">
-        <a href="{% url 'company_detail' com.cname %}">View</a>
+    <div class="content">
+        {% for com in comp %}
+            <div class="box">
+                <h1>{{ com.cname }}</h1>
+                <div class="view-link">
+                    <a href="{% url 'year_of_passouts' com.cname %}">View</a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    </div>
-{% endfor %}
-
 </body>
 </html>
 {% endblock %}

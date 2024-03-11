@@ -57,8 +57,9 @@ def verify_otp(request):
             otp_generated = request.session['otp']
             if otp_entered == otp_generated:
                 del request.session['otp']  # Clear OTP from session
+                email = request.session.get('email')
                 # If OTP is correct, redirect to a blank page or any desired page
-                return render(request, 'home.html')
+                return render(request, 'home.html',{'email':email})
             else:
                 messages.error(request, 'Invalid OTP. Please try again.')
                 #return HttpResponseRedirect(request.path_info)  # Redirect back to the same page if OTP is invalid
@@ -78,11 +79,17 @@ def logout_view(request):
 
 
 def form_html(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     return render(request, 'form.html')
 
 def home_html(request):
     companies = Company.objects.all()
-    return render(request, 'home.html', {'companies': companies})
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
+    return render(request, 'home.html', {'companies': companies, 'email':email})
 
 
 # views.py
@@ -93,6 +100,9 @@ from django.shortcuts import render, redirect
 from .models import Userdetails, Interview, Company
 
 def add_interview(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     if request.method == 'POST':
         # Get form data
         name = request.POST.get('name')
@@ -156,18 +166,46 @@ def add_interview(request):
 
 
 def companies(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     comp = Company.objects.all()
     return render(request, 'companies.html', {'comp':comp})
 
+def year_of_passouts(request, company_name):
+    email = request.session.get('email')
+    if email == None:
+        return render(request, 'login.html')
+
+    # Retrieve the company object using the provided company name
+    company = get_object_or_404(Company, cname__iexact=company_name)
+
+    # Filter Interview objects by the company object and get distinct years of passouts
+    distinct_passouts = Interview.objects.filter(company=company).values('user__year_of_passout').distinct()
+
+    return render(request, 'years.html', {'distinct_passouts': distinct_passouts, 'name': company_name})
 
 
-def company_detail(request, company_name):
-    # Perform the query
-    stusers = Userdetails.objects.filter(interview__company__cname__iexact=company_name).values('name', 'rollno', 'branch','id')
+def company_detail(request, company_name, year):
+    email = request.session.get('email')
+    if email is None:
+        return render(request, 'login.html')
+    
+    # Retrieve the company object using the provided company name
+    company = get_object_or_404(Company, cname__iexact=company_name)
+    
+    # Perform the query to filter Userdetails based on the year of passout
+    stusers = Userdetails.objects.filter(
+        year_of_passout=year,
+        interview__company=company
+    ).values('name', 'rollno', 'branch','id')
+    
+    return render(request, 'students.html', {'stusers': stusers})
+
 
     # Pass the data to the template or process it further
     #context = {'users_under_company': users_under_company}
-    return render(request, 'students.html', {'stusers':stusers})
+    
 
 
 
@@ -175,12 +213,20 @@ from django.shortcuts import get_object_or_404
 
 
 def user_detail(request, user_id):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     # Fetch the user details from the database
     user = get_object_or_404(Userdetails, pk=user_id)
 
     # Pass the user object to the template
     return render(request, 'user_details.html', {'user': user})
+
+
 def search_companies(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     if 'company' in request.GET:
         company_name = request.GET['company']
         companies = Company.objects.filter(cname__istartswith=company_name)
@@ -188,14 +234,33 @@ def search_companies(request):
         companies = Company.objects.all()
     return render(request, 'home.html', {'companies': companies})
 
+
+
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+from .models import Company
+
 def search_company_students_home(request):
     if 'company' in request.GET:
         company_name = request.GET['company']
-        return company_detail(request, company_name)
+        try:
+            # Attempt to retrieve the company object
+            company = Company.objects.get(cname__iexact=company_name)
+        except Company.DoesNotExist:
+            # If the company doesn't exist, raise a 404 error
+            return HttpResponse("Company does not exist")
+        return year_of_passouts(request, company_name)
+
+
+
 from .models import * 
 from .forms import * 
 
 def community(request):
+    
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     forums=forum.objects.all()
     count=forums.count()
     discussions=[]
@@ -212,6 +277,9 @@ from .models import Userdetails, Interview, Company, forum
 from .forms import CreateInForum, CreateInDiscussion
 
 def addInForum(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     form = CreateInForum()
     if request.method == 'POST':
         form = CreateInForum(request.POST)
@@ -226,18 +294,41 @@ def addInForum(request):
     return render(request, 'addInForum.html', context)
 
  
-def addInDiscussion(request):
-    form = CreateInDiscussion()
+def addInDiscussion(request, topic_id):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
+    forum_instance = forum.objects.get(pk=topic_id)
     if request.method == 'POST':
         form = CreateInDiscussion(request.POST)
         if form.is_valid():
             discussion_instance = form.save(commit=False)
-            # Set the email field from session data
+            discussion_instance.forum = forum_instance
             discussion_instance.email = request.session.get('email')
             discussion_instance.save()
-            
             return redirect('community')
-    context ={'form':form}
-    return render(request,'addInDiscussion.html',context)
+    else:
+        form = CreateInDiscussion(initial={'forum': forum_instance})
+    context = {'form': form, 'topic_id':topic_id}
+    return render(request, 'addInDiscussion.html', context)
+
+
 def archive(request):
-    return render(request,'archive.html')
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
+    return render(request, 'archive.html')
+
+from django.shortcuts import render
+from .models import Interview, Userdetails
+from django.db.models import Count
+
+def interview_statistics(request):
+    if request.method == 'POST':
+        selected_year = request.POST.get('selected_year')
+        interviews = Interview.objects.filter(user__year_of_passout=selected_year)
+        companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
+        return render(request, 'companyvisuals.html', {'companies_count': companies_count,'selected_year':selected_year})
+    else:
+        years = Userdetails.objects.values_list('year_of_passout', flat=True).distinct()
+        return render(request, 'yearvisuals.html', {'years': years})
