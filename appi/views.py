@@ -324,11 +324,19 @@ from .models import Interview, Userdetails
 from django.db.models import Count
 
 def interview_statistics(request):
+    email = request.session.get('email')
+    if email==None:
+        return render(request, 'login.html')
     if request.method == 'POST':
         selected_year = request.POST.get('selected_year')
-        interviews = Interview.objects.filter(user__year_of_passout=selected_year)
-        companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
-        return render(request, 'companyvisuals.html', {'companies_count': companies_count,'selected_year':selected_year})
+        if selected_year.isdigit():
+            interviews = Interview.objects.filter(user__year_of_passout=selected_year)
+            companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
+            return render(request, 'companyvisuals.html', {'companies_count': companies_count,'selected_year':selected_year})
+        else:
+            return HttpResponse("<h1><center>Please choose one from the dropdown.</center></h1>")
     else:
         years = Userdetails.objects.values_list('year_of_passout', flat=True).distinct()
-        return render(request, 'yearvisuals.html', {'years': years})
+        interviews = Interview.objects.all()
+        companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
+        return render(request, 'yearvisuals.html', {'years': years,'companies_count':companies_count})

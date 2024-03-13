@@ -68,23 +68,47 @@
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
         
-        <label for="lp">Linkedin Profile URL:</label>
+        <label for="lp">Linkedin Profile URL (Optional): </label>
         <input type="text" id="lp" name="lp">
     
         <label for="branch">Branch: (eg: DS)</label>
-        <input type="text" id="branch" name="branch" required>
+        <!--<input type="text" id="branch" name="branch" required>-->
+        <input type="text" id="branch" name="branch" placeholder="Choose your Branch..." list="branch_list" required>
+            <datalist id="branch_list">
+                {% for branch in branches %}
+                    <option value="{{branch}}">
+                {% endfor %}
+            </datalist>
     
         <label for="rollno">Roll No:</label>
         <input type="text" id="rollno" name="rollno" required>
     
         <label for="year_of_passout">Year of Passout: (eg:2024)</label>
-        <input type="text" id="year_of_passout" name="year_of_passout" required>
+        <!--<input type="text" id="year_of_passout" name="year_of_passout" required>-->
+        <input type="text" id="year_of_passout" name="year_of_passout" placeholder="Choose Year of passout..." list="yearp_list" required>
+            <datalist id="yearp_list">
+                {% for year in years_range %}
+                    <option value="{{year}}">
+                {% endfor %}
+            </datalist>
 
         <label for="cname">Company Name:</label>
-        <input type="text" id="cname" name="cname" required>
+        <!--<input type="text" id="cname" name="cname" required>-->
+        <input type="text" id="cname" name="cname" placeholder="Enter Company name..." list="company_list" required>
+            <datalist id="company_list">
+                {% for company in companies %}
+                    <option value="{{company.cname}}">
+                {% endfor %}
+            </datalist>
     
         <label for="year_of_interview">Year of Interview: (eg:2024)</label>
-        <input type="text" id="year_of_interview" name="year_of_interview" required>
+        <!--<input type="text" id="year_of_interview" name="year_of_interview" required>-->
+        <input type="text" id="year_of_interview" name="year_of_interview" placeholder="Choose Interview year..." list="yeari_list" required>
+            <datalist id="yeari_list">
+                {% for year in years_range %}
+                    <option value="{{year}}">
+                {% endfor %}
+            </datalist>
     
         <label for="role">Role: (eg: SDE, GET)</label>
         <input type="text" id="role" name="role" required>

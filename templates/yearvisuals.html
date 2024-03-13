@@ -6,18 +6,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview Statistics</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        .drop-down {
+            justify-content: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+        input[type="text"] {
+            width: 300px;
+            height: 40px;
+            border-radius: 9px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 0px solid black;
+            margin-bottom: 20px;
+        }
+        button[type="submit"] {
+            width: 300px;
+            height: 30px;
+            border-radius: 9px;
+            border: 0px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: blue;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Select Year of Passout</h1>
+    <div class="drop-down">
     <form method="post">
         {% csrf_token %}
-        <select name="selected_year">
-            {% for year in years %}
-                <option value="{{ year }}">{{ year }}</option>
-            {% endfor %}
-        </select>
+        <div class="selected-year"> <!-- Change input to div -->
+            <input type="text" class="year" name="selected_year" placeholder="Choose a year..." list="year_list">
+            <datalist id="year_list">
+                {% for year in years %}
+                    <option value="{{ year }}">
+                {% endfor %}
+            </datalist>
+        </div>
         <button type="submit">Submit</button>
     </form>
+    </div>
+    <h1>Interview Statistics</h1>
+    <canvas id="interviewChart" width="600" height="300"></canvas>
+
+    <script>
+        const ctx = document.getElementById('interviewChart').getContext('2d');
+        const companies = [];
+        const counts = [];
+        {% for company_count in companies_count %}
+            companies.push("{{ company_count.company__cname }}");
+            counts.push({{ company_count.total }});
+        {% endfor %}
+    
+        // Generate colors from bright to light based on counts
+        const colors = counts.map((count, index) => {
+            const alpha = 1 - (index / counts.length);
+            return `rgba(54, 162, 235, ${alpha})`; // Corrected here
+        });
+    
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: companies,
+                datasets: [{
+                    label: 'Number of Students',
+                    data: counts,
+                    backgroundColor: colors,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                layout: {
+                    padding: {
+                        left: 200, // Adjust left padding as needed
+                        right: 200, // Adjust right padding as needed
+                        top: 100, // Adjust top padding as needed
+                        bottom: 200 // Adjust bottom padding as needed
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
