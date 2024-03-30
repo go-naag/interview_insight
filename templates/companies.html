@@ -26,7 +26,7 @@
             height: 150px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 9px;
             text-align: center;
             margin: 20px auto;
             position: relative;
@@ -54,6 +54,8 @@
             border-top: 1px solid #ccc;
             text-align: center;
             transition: background-color 0.3s, color 0.3s;
+            border-radius: 9px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .view-link a {
             color: blue;
@@ -67,13 +69,16 @@
         .view-link:hover {
             background-color: orange;
         }
+        .uppercase{
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
     <div class="content">
         {% for com in comp %}
             <div class="box">
-                <h1>{{ com.cname }}</h1>
+                <h1 class="uppercase">{{ com.cname }}</h1>
                 <div class="view-link">
                     <a href="{% url 'year_of_passouts' com.cname %}">View</a>
                 </div>

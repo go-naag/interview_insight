@@ -82,7 +82,10 @@ def form_html(request):
     email = request.session.get('email')
     if email==None:
         return render(request, 'login.html')
-    return render(request, 'form.html')
+    companies = Company.objects.all()
+    branches = ['Data Science', 'Cybersecurity', 'CSE', 'IT', 'ECE', 'EEE', 'AI', 'AIML', 'Mechanical', 'Civil']
+    years_range = [i for i in range(2000,2100)]
+    return render(request, 'form.html',{'companies':companies, 'branches':branches,'years_range':years_range})
 
 def home_html(request):
     companies = Company.objects.all()
@@ -120,6 +123,8 @@ def add_interview(request):
         hr_interview_desc = request.POST.get('hr')
         prep_resources = request.POST.get('resources')
         contact_no = request.POST.get('contact')
+        company_name.capitalize()
+
         
         # Get email from session
         email = request.session.get('email')
@@ -160,8 +165,6 @@ def add_interview(request):
         return render(request,'form.html',{'submit':True})  # Change 'success_page' to your actual success page URL or name
     else:
         return render(request, 'your_template_name.html')  # Change 'your_template_name.html' to your actual template name
-
-
 
 
 
@@ -328,15 +331,27 @@ def interview_statistics(request):
     if email==None:
         return render(request, 'login.html')
     if request.method == 'POST':
-        selected_year = request.POST.get('selected_year')
-        if selected_year.isdigit():
-            interviews = Interview.objects.filter(user__year_of_passout=selected_year)
-            companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
-            return render(request, 'companyvisuals.html', {'companies_count': companies_count,'selected_year':selected_year})
+        selected_company = request.POST.get('selected_company')
+        if selected_company=='ADP':
+            return render(request, 'adp.html')
+        elif selected_company=='IBM':
+            return render(request, 'ibm.html')
+        elif selected_company=='Tech M':
+            return render(request, 'techm.html')
+        elif selected_company=='WAVELABS':
+            return render(request, 'wavelabs.html')
         else:
             return HttpResponse("<h1><center>Please choose one from the dropdown.</center></h1>")
+        '''if Company.objects.filter(cname=selected_company).exists():
+            #interviews = Interview.objects.filter(user__year_of_passout=selected_company)
+            #companies_count = interviews.values('company_cname').annotate(total=Count('company_cname'))
+            companies = Company.objects.all()
+            return render(request, 'companyvisuals.html', {'companies_count': companies_count,'selected_year':selected_company, 'companies':companies})
+        else:
+            return HttpResponse("<h1><center>Please choose one from the dropdown.</center></h1>")'''
     else:
         years = Userdetails.objects.values_list('year_of_passout', flat=True).distinct()
         interviews = Interview.objects.all()
         companies_count = interviews.values('company__cname').annotate(total=Count('company__cname'))
-        return render(request, 'yearvisuals.html', {'years': years,'companies_count':companies_count})
+        companies = Company.objects.all()
+        return render(request, 'yearvisuals.html', {'years': years,'companies_count':companies_count,'companies':companies})

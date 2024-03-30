@@ -1,0 +1,55 @@
+{% include 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADP STATS</title>
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        #tableauVizContainer {
+            position: relative;
+            width: 65%; /* Adjust width as needed */
+            height: 75vh; /* Adjust height as needed */
+            margin: 0 auto; /* Center the container horizontally */
+        }
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allow click-through to iframe */
+        }
+    </style>
+</head>
+<body>
+    <center><h1>ADP STATS</h1></center>
+    <div id="tableauVizContainer"></div>
+
+    <script>
+        function initializeViz() {
+            var containerDiv = document.getElementById("tableauVizContainer");
+            var url = "https://prod-apnortheast-a.online.tableau.com/t/20eg110103c72e6ad4ce/views/StatsADP/Dashboard1?:showVizHome=no";
+
+            var options = {
+                hideTabs: true,
+                hideToolbar: true
+            };
+
+            var viz = new tableau.Viz(containerDiv, url, options);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initializeViz();
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
